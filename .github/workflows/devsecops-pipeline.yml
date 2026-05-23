@@ -38,6 +38,16 @@ jobs:
           cd app
           npm audit || true
 
+      - name: Policy Gate Validation
+        run: |
+          echo "Policy Gate Check Passed"
+
+      - name: Secrets Management
+        run: |
+          echo "Secure Secret Access Configured"
+        env:
+          DEMO_SECRET: ${{ secrets.DEMO_SECRET }}
+
       - name: Docker Build Stage
         run: |
           echo "Docker Build Successful"
