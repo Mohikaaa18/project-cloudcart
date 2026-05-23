@@ -12,7 +12,7 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                bat 'cd app && npm install'
+                sh 'cd app && npm install'
             }
         }
 
@@ -30,13 +30,13 @@ pipeline {
 
         stage('Dependency Scan') {
             steps {
-                bat 'cd app && npm audit || exit 0'
+                sh 'cd app && npm audit || true'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                bat 'docker build -t cloudcart-app .'
+                sh 'docker build -t cloudcart-app .'
             }
         }
 
@@ -54,19 +54,19 @@ pipeline {
 
         stage('Deploy DEV') {
             steps {
-                bat 'scripts\\deploy-dev.bat'
+                sh 'echo Deploying to DEV Environment'
             }
         }
 
         stage('Deploy STAGE') {
             steps {
-                bat 'scripts\\deploy-stage.bat'
+                sh 'echo Deploying to STAGE Environment'
             }
         }
 
         stage('Deploy PROD') {
             steps {
-                bat 'scripts\\deploy-prod.bat'
+                sh 'echo Deploying to PROD Environment'
             }
         }
     }
