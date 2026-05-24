@@ -25,18 +25,21 @@ jobs:
           cd app
           npm install
 
-      - name: Secret Scan
-        run: |
-          echo "Gitleaks Secret Scan Successful"
-
-      - name: SAST Scan
-        run: |
-          echo "SAST Security Scan Successful"
+      - name: SonarCloud SAST Scan
+        uses: SonarSource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       - name: Dependency Scan
         run: |
           cd app
           npm audit || true
+
+      - name: Run Trivy Vulnerability Scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
 
       - name: Policy Gate Validation
         run: |
@@ -47,16 +50,6 @@ jobs:
           echo "Secure Secret Access Configured"
         env:
           DEMO_SECRET: ${{ secrets.DEMO_SECRET }}
-
-      - name: Docker Build Stage
-        run: |
-          echo "Docker Build Successful"
-
-      - name: Run Trivy Vulnerability Scanner
-        uses: aquasecurity/trivy-action@master
-        with:
-          scan-type: 'fs'
-          scan-ref: '.'
 
       - name: Terraform IaC Validation
         run: |
