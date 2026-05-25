@@ -41,6 +41,11 @@ jobs:
           scan-type: 'fs'
           scan-ref: '.'
 
+      - name: Run Checkov IaC Scan
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: .
+
       - name: Policy Gate Validation
         run: |
           echo "Policy Gate Check Passed"
